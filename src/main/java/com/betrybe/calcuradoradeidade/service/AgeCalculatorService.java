@@ -28,11 +28,8 @@ public class AgeCalculatorService {
     isValidDateFormat(date);
 
     LocalDate currentDate = LocalDate.now();
-    System.out.println(currentDate.getClass().getName());
 
     LocalDate birthDate = LocalDate.parse(date);
-    System.out.println(birthDate.getClass().getName());
-    System.out.println(date.getClass().getName());
 
     if (currentDate.isBefore(birthDate)) {
       throw new FutureDateException("This is a future date.");
@@ -69,7 +66,6 @@ public class AgeCalculatorService {
    */
   public void isDateNonNumeric(String date) throws NonNumericDateException {
     String newString = date.replace("-", "");
-    System.out.println(newString);
     for (char c : newString.toCharArray()) {
       if (!Character.isDigit(c)) {
         throw new NonNumericDateException("Date should be in numeric format.");
@@ -77,8 +73,19 @@ public class AgeCalculatorService {
     }
   }
 
+  /**
+   * Calcula idade com parametro default.
+   *
+   * @param date - data passada no paramentro date.
+   * @param defaultAge - data default.
+   * @return - data default.
+   */
   public int calculateAgeWithDefault(String date, int defaultAge) {
-    // TODO method implementation
-    return -1;
+    System.out.println("entrei no calculateAgeWithDefault");
+    try {
+      return calculateAge(date);
+    } catch (FutureDateException | InvalidSyntaxDateException | NonNumericDateException e) {
+      return defaultAge;
+    }
   }
 }

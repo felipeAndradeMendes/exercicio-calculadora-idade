@@ -32,9 +32,14 @@ public class AgeCalculatorController implements AgeCalculatorControllerInterface
   @GetMapping()
   public ResponseEntity<DateDto> calculateAge(
       @RequestParam String date,
-      @RequestParam(defaultValue = "0") String orDefaultAge
+      @RequestParam(required = false) String orDefaultAge
   ) {
-    int age = service.calculateAge(date);
+    int age;
+    if (orDefaultAge == null) {
+      age = service.calculateAge(date);
+    } else {
+      age = service.calculateAgeWithDefault(date, Integer.parseInt(orDefaultAge));
+    }
     return ResponseEntity.ok(new DateDto(age));
   }
 
