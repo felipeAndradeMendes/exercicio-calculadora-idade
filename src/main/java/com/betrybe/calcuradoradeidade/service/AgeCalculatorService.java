@@ -2,6 +2,7 @@ package com.betrybe.calcuradoradeidade.service;
 
 import com.betrybe.calcuradoradeidade.exception.FutureDateException;
 import com.betrybe.calcuradoradeidade.exception.InvalidSyntaxDateException;
+import com.betrybe.calcuradoradeidade.exception.NonNumericDateException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -23,6 +24,7 @@ public class AgeCalculatorService {
   public int calculateAge(String date) {
     DateTimeFormatter formater = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    isDateNonNumeric(date);
     isValidDateFormat(date);
 
     LocalDate currentDate = LocalDate.now();
@@ -57,6 +59,22 @@ public class AgeCalculatorService {
       throw new InvalidSyntaxDateException("Invalid date format. Expected aa-mm-dd.");
     }
     // Desisti de fazer minha validação e usei a do gabarito.
+  }
+
+  /**
+   * Valida data so com numeros.
+   *
+   * @param date - data da query.
+   * @throws NonNumericDateException - erro customizado de data nao numerica.
+   */
+  public void isDateNonNumeric(String date) throws NonNumericDateException {
+    String newString = date.replace("-", "");
+    System.out.println(newString);
+    for (char c : newString.toCharArray()) {
+      if (!Character.isDigit(c)) {
+        throw new NonNumericDateException("Date should be in numeric format.");
+      }
+    }
   }
 
   public int calculateAgeWithDefault(String date, int defaultAge) {
